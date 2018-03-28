@@ -36,25 +36,25 @@
 // import UserService from '@/services/UserService'
 
 export default {
-    name: 'Register'
-//   data () {
-//     return {
-//       email: '',
-//       password: '',
-//       error: null
-//     }
-//   },
-//   methods: {
-//     async register () {
-//       try {
-//         const response = await UserService.register({
-//           email: this.email,
-//           password: this.password
-//         })
-//       } catch (error) {
-//         this.error = error.response.data.error
-//       }
-//     }
-//   }
+    name: 'Register',
+    data () {
+      return {
+        email: '',
+        password: '',
+        error: null
+      }
+    },
+    methods: {
+      async register () {
+        try {
+          const response = await UserService.register({
+            email: this.email,
+            password: this.password
+          })
+        } catch (error) {
+          this.error = error.response.data.error
+        }
+      }
+    }
 }
 </script>
