@@ -33,7 +33,7 @@
 </template>
 
 <script>
-// import UserService from '@/services/UserService'
+import UserService from '@/services/UserService'
 
 export default {
     name: 'Register',
@@ -51,6 +51,7 @@ export default {
             email: this.email,
             password: this.password
           })
+          console.log(response)
         } catch (error) {
           this.error = error.response.data.error
         }

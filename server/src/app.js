@@ -9,6 +9,8 @@ app.use(morgan('combined'))
 app.use(bodyparser.json())
 app.use(cors())
 
+require('./passport')
+require('./models')
 require('./routes')(app)
 
 app.listen(config.port)
