@@ -6,7 +6,10 @@ const config = require('./config/config')
 
 const app = express()
 app.use(morgan('combined'))
+
+app.use(bodyparser.urlencoded({extended: false}))
 app.use(bodyparser.json())
+
 app.use(cors())
 
 require('./passport')

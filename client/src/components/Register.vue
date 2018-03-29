@@ -4,22 +4,27 @@
       <div class="headline" style="padding-top:50px">회원가입</div>
       <div>
         <form 
-          name="tab-tracker-form"
+          name="gopilgrims-form"
           autocomplete="off">
           <v-text-field
-            label="Email"
+            label="이름"
+            v-model="username"
+          ></v-text-field>
+          <br>
+          <v-text-field
+            label="이메일"
             v-model="email"
           ></v-text-field>
           <br>
           <v-text-field
-            label="Password"
+            label="비밀번호"
             type="password"
             v-model="password"
             autocomplete="new-password"
           ></v-text-field>
         </form>
         <br>
-        <div class="danger-alert" v-html="error" />
+        <div v-html="result" />
         <br>
         <v-btn
           dark
@@ -39,21 +44,23 @@ export default {
     name: 'Register',
     data () {
       return {
+        username: '',
         email: '',
         password: '',
-        error: null
+        result: null
       }
     },
     methods: {
       async register () {
         try {
           const response = await UserService.register({
+            username: this.username,
             email: this.email,
             password: this.password
           })
-          console.log(response)
+          this.result = response.data.message
         } catch (error) {
-          this.error = error.response.data.error
+          this.result = error.response.data.error
         }
       }
     }
