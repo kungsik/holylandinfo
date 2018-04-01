@@ -1,5 +1,6 @@
 const UserController = require('./controllers/UserController')
 const AuthenticationPolicy = require('./policies/AuthenticationPolicy')
+const isAuthenticated = require('./policies/isAuthenticated')
 
 module.exports = (app) => {
     app.post('/register', 
@@ -16,4 +17,6 @@ module.exports = (app) => {
             test: 'this is a test'
         })
     })
+
+    app.get('/authentest', isAuthenticated)
 }

@@ -4,6 +4,7 @@ import Info from '@/components/Info/Index'
 import Main from '@/components/Main'
 import Register from '@/components/Register'
 import Test from '@/components/Test'
+import Login from '@/components/Login'
 
 
 
@@ -23,6 +24,10 @@ export default new Router({
         {
             path: '/register',
             component: Register
+        },
+        {
+            path: '/login',
+            component: Login
         },
         {
             path: '/test',

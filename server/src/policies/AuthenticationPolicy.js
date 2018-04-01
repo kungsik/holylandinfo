@@ -3,7 +3,7 @@ const Joi = require('joi')
 module.exports = {
   register (req, res, next) {
     const schema = {
-        username: Joi.string().alphanum().required(),
+        username: Joi.string().required(),
         email: Joi.string().email(),
         password: Joi.string().regex(new RegExp('^[a-zA-Z0-9]{8,32}$')
       )
@@ -30,7 +30,7 @@ module.exports = {
           break
         case 'username':
           res.status(400).send({
-              error: '이름이 입력되지 않았거나 형식이 올바르지 않습니다. 문자와 숫자만 적어주세요.'
+              error: '이름이 입력되지 않았습니다.'
           })
         default:
           res.status(400).send({

@@ -15,6 +15,9 @@
             <v-btn flat class="button" :to="{path:'/register'}">
             회원가입
             </v-btn>
+            <v-btn flat class="button" :to="{path:'/login'}">
+            로그인
+            </v-btn>
         </v-toolbar-items>
      </v-toolbar>
 </template>

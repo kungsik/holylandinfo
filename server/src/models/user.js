@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const config = require('../config/config')
 
 //User Schema Define
 const UserSchema = new Schema({
@@ -10,6 +11,7 @@ const UserSchema = new Schema({
 })
 
 UserSchema.methods.comparePassword = function (password) {
+  password = config.encryptpass(password)
   return password === this.password
 }
 

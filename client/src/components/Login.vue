@@ -1,28 +1,25 @@
 <template>
   <v-layout>
     <v-flex xs10 offset-xs1>
-      <div v-show="!isregistered">
-        <div class="headline" style="padding-top:50px">회원가입</div>
+      <div v-show="!token">
+        <div class="headline" style="padding-top:50px">로그인</div>
         <div>
           <form name="gopilgrims-form" autocomplete="off">
-            <v-text-field label="이름" v-model="username"></v-text-field>
-            <br>
             <v-text-field label="이메일" v-model="email"></v-text-field>
             <br>
             <v-text-field label="비밀번호" type="password" v-model="password" autocomplete="new-password"></v-text-field>
           </form>
           <br>
-          <div v-html="result" />
+          <div v-html="error" />
           <br>
           <div v-show="!issubmitted">
-            <v-btn dark class="cyan" @click="register">가입</v-btn>
+            <v-btn dark class="cyan" @click="login">로그인</v-btn>
           </div>
         </div>
       </div>
-      <div v-show="isregistered">
+      <div v-show="token">
         <div class="headline" style="padding-top:50px">
-          {{ registeredname }}님 환영합니다. <br>
-          회원가입이 정상적으로 완료되었습니다.
+          {{ username }}님으로 로그인 되셨습니다. <br>
         </div>
       </div>
     </v-flex>
@@ -33,33 +30,33 @@
 import UserService from '@/services/UserService'
 
 export default {
-    name: 'Register',
+    name: 'Login',
     data () {
       return {
-        username: '',
         email: '',
         password: '',
-        result: null,
         issubmitted: false,
-        isregistered: false,
-        registeredname: ''
+        isloggedin: false,
+        error: '',
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("username")
       }
     },
     methods: {
-      async register () {
+      async login () {
         try {
           this.issubmitted = true
-          const response = await UserService.register({
-            username: this.username,
+          const response = await UserService.login({
             email: this.email,
             password: this.password
           })
-          this.result = response.data.message
-          this.registeredname = response.data.user.username
           this.issubmitted = false
-          this.isregistered = true
+          this.token = response.data.token
+          this.username = response.data.user.username
+          localStorage.setItem("username", this.username)
+          localStorage.setItem("token", this.token)
         } catch (error) {
-          this.result = error.response.data.error
+          this.error = error.response.data.error
           this.issubmitted = false
         }
       }
