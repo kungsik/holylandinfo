@@ -18,5 +18,5 @@ module.exports = (app) => {
         })
     })
 
-    app.get('/authentest', isAuthenticated)
+    app.get('/authentification', isAuthenticated)
 }

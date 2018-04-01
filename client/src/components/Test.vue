@@ -1,16 +1,13 @@
 <template>
 
 <v-content>
-
-
-    <div v-html="error"></div>
-    <div v-text="result" id="result"></div>
+    <div v-text="result"></div>
 </v-content>
 
 </template>
 
 <script>
-import TestService from '@/services/TestService'
+import UserService from '@/services/UserService'
 
 export default {
     name: 'Test',
@@ -18,6 +15,15 @@ export default {
         return {
             error: null,
             result: null
+        }
+    },
+    created: function() {
+        if(!localStorage.token) {
+            this.result = "not logged in"
+        }
+        else {
+            this.result = UserService.checkAuthentification()
+            console.log(this.result)
         }
     }
 }
