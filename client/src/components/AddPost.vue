@@ -1,8 +1,9 @@
 <template>
 
 <v-content>
-    <div class="headline" style="padding-top:5%; padding-right:5%; padding-left:5%">글쓰기<br><br>
-        <vue-editor id="editor" v-model="content"></vue-editor>
+    <div class="headline" style="padding:5% 0 0 0">글쓰기</div>
+    <div id="texteditor">
+        <textarea name="content" id="editor" v-model="content"></textarea>
     </div>
 
     <div v-show="!issubmitted">
@@ -13,15 +14,12 @@
 </template>
 
  <script>
-   import { VueEditor } from 'vue2-editor'
-
-   export default {
+    export default {
         components: {
-            VueEditor
         },
         data() {
             return {
-                content: '<h1>Some initial content</h1>',
+                content: '',
                 issubmitted: false
             }
         },
@@ -29,12 +27,25 @@
             async add() {
                 console.log(issubmitted)
             }
+        },
+        mounted: function() {
+            ClassicEditor
+                .create(document.querySelector('#editor'))
+                .catch(error => {
+                    console.error(error)
+                })
         }
-   }
+    }
  </script>
 
  <style>
-  #editor {
-    height: 100%;
-  }
+    #texteditor {
+        padding: 1% 5% 1% 5%
+    }
+
+    .ck-content {
+        height: 200px;
+        text-align: justify;
+    }
+
 </style>
