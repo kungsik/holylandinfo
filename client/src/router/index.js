@@ -5,6 +5,8 @@ import Main from '@/components/Main'
 import Register from '@/components/Register'
 import Test from '@/components/Test'
 import Login from '@/components/Login'
+import AddPost from '@/components/AddPost'
+
 
 
 
@@ -14,6 +16,7 @@ export default new Router({
     mode: "history",
     routes: [
         {
+            name: 'main',
             path: '*',
             component: Main        
         },
@@ -28,6 +31,10 @@ export default new Router({
         {
             path: '/login',
             component: Login
+        },
+        {
+            path: '/addpost',
+            component: AddPost
         },
         {
             path: '/test',

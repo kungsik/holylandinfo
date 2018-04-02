@@ -31,6 +31,7 @@
 
 <script>
 import UserService from '@/services/UserService'
+import router from '@/router/'
 
 export default {
     name: 'Register',
@@ -44,6 +45,16 @@ export default {
         isregistered: false,
         registeredname: ''
       }
+    },
+    created: function() {
+        const self = this
+        if(localStorage.token) {
+            UserService.checkAuthentification()
+                .then(function(value) {
+                    alert('이미 로그인 되어 있습니다.')
+                    router.push('/')
+                })
+        }
     },
     methods: {
       async register () {

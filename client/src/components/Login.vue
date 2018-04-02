@@ -28,6 +28,7 @@
 
 <script>
 import UserService from '@/services/UserService'
+import router from '@/router/'
 
 export default {
     name: 'Login',
@@ -39,8 +40,18 @@ export default {
         isloggedin: false,
         error: '',
         token: localStorage.getItem("token"),
-        username: localStorage.getItem("username")
+        username: ''
       }
+    },
+    created: function() {
+        const self = this
+        if(localStorage.token) {
+            UserService.checkAuthentification()
+                .then(function(value) {
+                    self.islogged = true
+                    self.username = value.username
+                })
+        }
     },
     methods: {
       async login () {
@@ -53,8 +64,9 @@ export default {
           this.issubmitted = false
           this.token = response.data.token
           this.username = response.data.user.username
-          localStorage.setItem("username", this.username)
           localStorage.setItem("token", this.token)
+          router.go()
+          router.push('/')
         } catch (error) {
           this.error = error.response.data.error
           this.issubmitted = false

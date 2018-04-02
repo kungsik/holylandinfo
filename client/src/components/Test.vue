@@ -8,6 +8,7 @@
 
 <script>
 import UserService from '@/services/UserService'
+import router from '@/router/'
 
 export default {
     name: 'Test',
@@ -18,13 +19,11 @@ export default {
         }
     },
     created: function() {
-        if(!localStorage.token) {
-            this.result = "not logged in"
-        }
-        else {
-            this.result = UserService.checkAuthentification()
-            console.log(this.result)
-        }
+        const self = this
+        UserService.checkAuthentification()
+            .then(function(value) {
+                self.result = value.username
+            })
     }
 }
 
