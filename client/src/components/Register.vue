@@ -47,10 +47,10 @@ export default {
       }
     },
     created: function() {
-        const self = this
+        // const self = this
         if(localStorage.token) {
             UserService.checkAuthentification()
-                .then(function(value) {
+                .then(function() {
                     alert('이미 로그인 되어 있습니다.')
                     router.push('/')
                 })
