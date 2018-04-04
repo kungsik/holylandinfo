@@ -22,7 +22,8 @@
       <div v-show="isregistered">
         <div class="headline" style="padding-top:50px">
           {{ registeredname }}님 환영합니다. <br>
-          회원가입이 정상적으로 완료되었습니다.
+          회원가입이 정상적으로 완료되었습니다. <br>
+          상단의 로그인 버튼을 눌러 로그인해 주세요.
         </div>
       </div>
     </v-flex>

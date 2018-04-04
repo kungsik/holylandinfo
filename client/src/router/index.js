@@ -5,7 +5,9 @@ import Main from '@/components/Main'
 import Register from '@/components/Register'
 import Test from '@/components/Test'
 import Login from '@/components/Login'
-import AddPost from '@/components/AddPost'
+import AddPost from '@/components/Info/AddPost'
+import ViewPost from '@/components/Info/ViewPost'
+
 
 
 
@@ -33,8 +35,12 @@ export default new Router({
             component: Login
         },
         {
-            path: '/addpost',
+            path: '/post/addpost',
             component: AddPost
+        },
+        {
+            path: '/post/viewpost/:postId',
+            component: ViewPost
         },
         {
             path: '/test',

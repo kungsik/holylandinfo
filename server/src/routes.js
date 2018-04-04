@@ -1,4 +1,6 @@
 const UserController = require('./controllers/UserController')
+const PostController = require('./controllers/PostController')
+
 const AuthenticationPolicy = require('./policies/AuthenticationPolicy')
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -19,4 +21,8 @@ module.exports = (app) => {
     })
 
     app.get('/authentification', isAuthenticated)
+
+    app.post('/post/addpost', PostController.addpost)
+
+    app.post('/post/viewpost', PostController.viewpost)
 }
