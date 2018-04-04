@@ -1,23 +1,19 @@
 <template>
 
 <v-content>
-    <div class="headline" style="padding:5% 0 0 0">글읽기</div>
-    <div id="postview">
-        <v-layout row justify-space-between>
-            <v-flex xs3>
-                <div id="category"> {{ category }} </div>
-            </v-flex>
-            <v-flex xs8>
-                <div id="title"> {{ title }} </div>
+    <v-container grid-list-xl text-xs-center>
+        <v-layout row wrap>
+            <v-flex xs8 offset-xs2>
+                <div class="subheading" style="text-align:left; padding-bottom:10px"><a href="#">{{ category }} 지역</a></div> 
+                <div class="display-1" style="text-align:left; padding-bottom:50px"> <b>{{ title }}</b> </div>
+                <div class="caption" style="text-align:left"> {{ username }} ({{ email }}) <br>작성일: {{ createddate }}</div>
+                <br>
+                <v-divider></v-divider>
+                <br>
+                <div class="ql-editor" v-html="content"></div>
             </v-flex>
         </v-layout>
-        <div id="content" v-html="content" class="ql-editor"></div>
-        <br><br>
-        <span style="text-align: right">
-            작성일: {{ createddate }}<br>
-            작성자: {{ username }} ({{ email }})
-        </span>
-    </div>
+    </v-container>
 </v-content>
 
 </template>
@@ -44,10 +40,13 @@
                 const postId = this.$route.params.postId 
                 const response = await PostService.viewpost({postId: postId})
 
+                var date = new Date(response.data.post.createddate)
+                var month = date.getMonth() + 1
+                this.createddate = date.getFullYear() + "." + month + "." + date.getDate()
+
                 this.title = response.data.post.title
                 this.content = response.data.post.content
                 this.email = response.data.post.email
-                this.createddate = response.data.post.createddate
                 this.category = response.data.post.category
                 this.username = response.data.post.username            
             } catch(error) {

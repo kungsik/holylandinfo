@@ -1,18 +1,22 @@
 <template>
 
 <v-content>
-    <div class="headline" style="padding:5% 0 0 0">글쓰기</div>
+    <div class="headline" style="padding:3% 0 0 0">새로운 글 작성</div>
     <div id="texteditor">
         <form name="post" autocomplete="off">
             <v-layout row justify-space-between>
-                <v-flex xs3>
-                    <v-select label="카테고리" v-model="category" :items="categories" required></v-select>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field label="제목" v-model="title" required></v-text-field>
+                <v-flex xs8 offset-xs2>
+                    <v-flex xs2>
+                        <v-select label="카테고리" v-model="category" :items="categories"></v-select>
+                    </v-flex>
+                    <v-flex xs12>
+                        <v-text-field label="제목" v-model="title" :rules="[rules.required]"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                        <div id="editor"></div>
+                    </v-flex>
                 </v-flex>
             </v-layout>
-            <div id="editor"></div>
         </form>
     </div>
 
@@ -46,7 +50,10 @@
                 username: '',
                 createddate: '',
                 category: '',
-                categories: ["예루살렘", "갈릴리"]
+                categories: ["예루살렘", "갈릴리"],
+                rules: {
+                    required: (value) => !!value || '필수 항목입니다.'
+                }
             }
         },
         methods: {
@@ -127,7 +134,20 @@
         padding: 1% 5% 1% 5%
     }
     .ql-editor {
-        min-height: 300px
+        min-height: 240px;
+    }
+    .ql-toolbar.ql-snow {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #bfbfbf
+        
+    }
+    .ql-container.ql-snow {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #bfbfbf
     }
 
 </style>
