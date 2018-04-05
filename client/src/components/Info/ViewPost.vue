@@ -3,14 +3,20 @@
 <v-content>
     <v-container grid-list-xl text-xs-center>
         <v-layout row wrap>
-            <v-flex xs8 offset-xs2>
-                <div class="subheading" style="text-align:left; padding-bottom:10px"><a href="#">{{ category }} 지역</a></div> 
-                <div class="display-1" style="text-align:left; padding-bottom:50px"> <b>{{ title }}</b> </div>
-                <div class="caption" style="text-align:left"> {{ username }} ({{ email }}) <br>작성일: {{ createddate }}</div>
-                <br>
-                <v-divider></v-divider>
-                <br>
-                <div class="ql-editor" v-html="content"></div>
+            <v-flex id="postView">
+                <v-flex md12 offset-md2>
+                    <div class="subheading" style="text-align:left; padding-bottom:10px"><a href="#" id="category">{{ category }} 지역</a></div> 
+                    <div class="display-1" style="text-align:left; padding-bottom:50px"> <b>{{ title }}</b> </div>
+                    <div class="caption" style="text-align:left"> {{ username }} ({{ email }}) <br>작성일: {{ createddate }}</div>
+                </v-flex>
+                <!-- <v-flex> -->
+                    <br>
+                    <v-divider></v-divider>
+                    <br>
+                <!-- </v-flex> -->
+                <v-flex md8 offset-md2>               
+                    <div class="ql-editor" v-html="content"></div>                
+                </v-flex>                
             </v-flex>
         </v-layout>
     </v-container>
@@ -19,10 +25,10 @@
 </template>
 
  <script> 
-    import Quill from 'quill'
-    import UserService from '@/services/UserService'
+    //import Quill from 'quill'
+    //import UserService from '@/services/UserService'
     import PostService from '@/services/PostService'
-    import router from '@/router/'
+    //import router from '@/router/'
 
     export default {
         data() {
@@ -57,11 +63,14 @@
  </script>
 
  <style>
-    #postview {
-        padding: 1% 5% 1% 5%
-    }
     .ql-editor {
         min-height: 300px
+    }
+    #postView {
+        padding-top: 70px
+    }
+    a#category:link {
+        text-decoration: none;
     }
 
 </style>

@@ -1,5 +1,6 @@
 const UserController = require('./controllers/UserController')
 const PostController = require('./controllers/PostController')
+const MapDistanceController = require('./controllers/MapDistanceController')
 
 const AuthenticationPolicy = require('./policies/AuthenticationPolicy')
 const isAuthenticated = require('./policies/isAuthenticated')
@@ -14,15 +15,31 @@ module.exports = (app) => {
         UserController.login
     )
 
+    app.get('/authentification', 
+        isAuthenticated
+    )
+
+    app.post('/post/addpost', 
+        PostController.addpost
+    )
+
+    app.post('/post/viewpost', 
+        PostController.viewpost
+    )
+
+    app.get('/post/listpost',
+        PostController.listpost
+    )
+
+    app.post('/map/distance', 
+        MapDistanceController.distance
+    )
+
+
+
     app.get('/test', (req, res) => {
         res.send({
             test: 'this is a test'
         })
     })
-
-    app.get('/authentification', isAuthenticated)
-
-    app.post('/post/addpost', PostController.addpost)
-
-    app.post('/post/viewpost', PostController.viewpost)
 }

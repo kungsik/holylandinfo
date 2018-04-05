@@ -1,14 +1,14 @@
 <template>     
      <v-content>
        <section>
-         <v-parallax :src="require('../assets/img/galilee.jpg')" height="600">
+         <v-parallax :src="require('../assets/img/galilee.jpg')" id="mainImg" height="600">
            <v-layout
              column
              align-center
              justify-center
              class="white--text"
            >
-             <img src="../assets/img/logo.png" alt="GoPilgrims" height="200">
+             <img src="../assets/img/logo.png" id="logo" alt="GoPilgrims" height="200">
              <v-btn
                class="blue lighten-2 mt-5"
                dark
@@ -31,9 +31,6 @@
            <v-flex xs12 sm4 class="my-3">
              <div class="text-xs-center">
                <h2 class="headline">성지를 향한 지름길</h2>
-               <span class="subheading">
-                 보람있고 알찬 성지 여행을 위한 자상한 길동무가 되어 드립니다.
-               </span>
              </div>
            </v-flex>
            <v-flex xs12>
@@ -182,5 +179,9 @@ export default {
 </script>
 
 <style>
-
+img#logo {
+  max-width: 100%;
+  min-width: 200px;
+  height: auto;
+}
 </style>

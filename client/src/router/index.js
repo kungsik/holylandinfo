@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Info from '@/components/Info/Index'
 import Main from '@/components/Main'
 import Register from '@/components/Register'
 import Test from '@/components/Test'
 import Login from '@/components/Login'
 import AddPost from '@/components/Info/AddPost'
 import ViewPost from '@/components/Info/ViewPost'
+import ListPost from '@/components/Info/ListPost'
 
 
 
@@ -23,10 +23,6 @@ export default new Router({
             component: Main        
         },
         {
-            path: '/info',
-            component: Info
-        },
-        {
             path: '/register',
             component: Register
         },
@@ -41,6 +37,10 @@ export default new Router({
         {
             path: '/post/viewpost/:postId',
             component: ViewPost
+        },
+        {
+            path: '/post/listpost',
+            component: ListPost
         },
         {
             path: '/test',

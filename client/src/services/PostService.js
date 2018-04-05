@@ -7,5 +7,8 @@ export default {
     },
     viewpost(postId) {
         return Api().post('post/viewpost', postId)
+    },
+    listpost() {
+        return Api().get('post/listpost')
     }
 }

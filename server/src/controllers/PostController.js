@@ -39,5 +39,20 @@ module.exports = {
                 error: '포스트 호출 중 오류가 발생했습니다.'
             })
         }
+    },
+    async listpost (req, res) {
+        try {
+            const post = await Post.find({})
+            if(!post) {
+                return res.status(403).send({
+                    error: '요청하신 포스트는 존재하지 않습니다.'
+                })
+            }
+            res.send(post)
+        } catch (err) {
+            res.status(500).send({
+                error: '포스트 호출 중 오류가 발생했습니다.'
+            })
+        }
     }
 }

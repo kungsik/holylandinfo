@@ -6,7 +6,7 @@
            </router-link>
         </v-toolbar-title>
        <v-toolbar-items class="hidden-sm-and-down">
-           <v-btn flat class="button">성지정보</v-btn>
+           <v-btn flat class="button" :to="{path:'/post/ListPost'}">성지정보</v-btn>
            <v-btn flat class="button">여행일정</v-btn>
            <v-btn flat class="button">일정체크</v-btn>
         </v-toolbar-items>
@@ -68,5 +68,9 @@ export default {
 </script>
 
 <style>
-
+.white {
+    overflow: hidden;
+    position: fixed; /* Set the navbar to fixed position */
+    z-index: 1;
+}
 </style>

@@ -1,18 +1,18 @@
 <template>
 
 <v-content>
-    <div class="headline" style="padding:3% 0 0 0">새로운 글 작성</div>
+    <div class="headline" style="padding:90px 0 0 0">새로운 글 작성</div>
     <div id="texteditor">
         <form name="post" autocomplete="off">
             <v-layout row justify-space-between>
-                <v-flex xs8 offset-xs2>
-                    <v-flex xs2>
+                <v-flex md8 offset-md2>
+                    <v-flex md2>
                         <v-select label="카테고리" v-model="category" :items="categories"></v-select>
                     </v-flex>
-                    <v-flex xs12>
+                    <v-flex md12>
                         <v-text-field label="제목" v-model="title" :rules="[rules.required]"></v-text-field>
                     </v-flex>
-                    <v-flex xs12>
+                    <v-flex md12>
                         <div id="editor"></div>
                     </v-flex>
                 </v-flex>
