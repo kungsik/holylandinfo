@@ -35,7 +35,11 @@ export default new Router({
             component: AddPost
         },
         {
-            path: '/post/viewpost/:postId',
+            path: '/post/editpost/:editId',
+            component: AddPost
+        },
+        {
+            path: '/post/viewpost/:postUrl',
             component: ViewPost
         },
         {

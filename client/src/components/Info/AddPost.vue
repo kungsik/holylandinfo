@@ -1,7 +1,8 @@
 <template>
 
 <v-content>
-    <div class="headline" style="padding:90px 0 0 0">새로운 글 작성</div>
+    <div class="headline addPostTitle" v-if="!editId">새로운 글 작성</div>
+    <div class="headline addPostTitle" v-if="editId">글 수정</div>
     <div id="texteditor">
         <form name="post" autocomplete="off">
             <v-layout row justify-space-between>
@@ -20,8 +21,12 @@
         </form>
     </div>
 
-    <div v-show="!issubmitted">
+    <!-- <div v-show="!issubmitted"> -->
+    <div v-if="!editId">
         <v-btn dark class="cyan" @click="add">글쓰기</v-btn>
+    </div>
+    <div v-if="editId">
+        <v-btn dark class="cyan" @click="edit">글수정</v-btn>
     </div>
 </v-content>
 
@@ -38,6 +43,7 @@
 
     import UserService from '@/services/UserService'
     import PostService from '@/services/PostService'
+    import router from '@/router/'
 
     export default {
         data() {
@@ -53,7 +59,8 @@
                 categories: ["예루살렘", "갈릴리"],
                 rules: {
                     required: (value) => !!value || '필수 항목입니다.'
-                }
+                },
+                editId: this.$route.params.editId
             }
         },
         methods: {
@@ -64,22 +71,16 @@
                     this.content = html[0].innerHTML
                     this.createddate = new Date().getTime()
 
-                    //seo를 위한 접속 url 형식의 포스트 아이디 만들기
-                    var random = Math.floor(Math.random() * 1000) + 1
-                    var urlTitle = this.title.replace(/ /gi, "-")
-                    const postId = random + "-" + urlTitle
-
-                    const post = {
+                    const query = {
                         email: this.email,
                         username: this.username,
                         title: this.title,
                         content: this.content,
                         category: this.category,
-                        createddate: this.createddate,
-                        postId: postId
+                        createddate: this.createddate
                     }
 
-                    const response = await PostService.addpost(post)
+                    const response = await PostService.addpost(query)
                     
                     console.log(response.data.message)
 
@@ -88,15 +89,55 @@
                     console.log(error.response.data.error)
                     this.issubmitted = false
                 }
+            },
+            async edit() {
+                try{
+                    this.issubmitted = true
+                    const html = document.getElementsByClassName("ql-editor")
+                    this.content = html[0].innerHTML
+                    this.editeddate = new Date().getTime()
+
+                    const query = {
+                        editId: this.editId,
+                        content: this.content,
+                        editeddate: this.editeddate,
+                        category: this.category,
+                        title: this.title
+                    }
+
+                    const response = await PostService.editpost(query)
+
+                    console.log(response.data.message)
+
+                } catch (error) {
+                    console.log(error.response.data.error)
+                    this.issubmitted = false
+                }
+
             }
         },
-        created: function() {
-            const self = this
-            UserService.checkAuthentification()
+        created: async function() {
+            var self = this
+            await UserService.checkAuthentification()
                 .then(function(value) {
                     self.email = value.email
                     self.username = value.username
+                    //수정 모드일 경우 유저의 이메일과 글의 이메일을 비교
+                    if(self.$route.params.editId) {
+                        const editId = self.$route.params.editId
+                        PostService.viewpost({postId: editId})
+                            .then(function(response) {
+                                if(self.email !== response.data.post.email) {
+                                    alert('글 수정 권한이 없습니다.' + this.email)
+                                    router.push({path: '/'})
+                                }
+                                self.title = response.data.post.title
+                                self.category = response.data.post.category
+                                self.quill.clipboard.dangerouslyPasteHTML(response.data.post.content)
+                            })                        
+                    }
                 })
+            
         },
         mounted: function() {
 
@@ -124,6 +165,7 @@
                     imageDrop: true
                 }
             })
+
             this.quill = quill
         }
     }
@@ -148,6 +190,9 @@
         border-left: none;
         border-right: none;
         border-bottom: 1px solid #bfbfbf
+    }
+    .headline.addPostTitle {
+        padding:90px 0 0 0;
     }
 
 </style>

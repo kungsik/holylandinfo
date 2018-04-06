@@ -15,7 +15,10 @@
                     <br>
                 <!-- </v-flex> -->
                 <v-flex md8 offset-md2>               
-                    <div class="ql-editor" v-html="content"></div>                
+                    <div class="ql-editor" v-html="content"></div> 
+                    <div v-if="email === loggedemail">
+                        <v-btn dark class="cyan" :to="{path:'/post/editpost/' + postId}">수정</v-btn>    
+                    </div>               
                 </v-flex>                
             </v-flex>
         </v-layout>
@@ -26,9 +29,9 @@
 
  <script> 
     //import Quill from 'quill'
-    //import UserService from '@/services/UserService'
+    import UserService from '@/services/UserService'
     import PostService from '@/services/PostService'
-    //import router from '@/router/'
+    // import router from '@/router/'
 
     export default {
         data() {
@@ -38,13 +41,26 @@
                 email: '',
                 createddate: '',
                 category: '',
-                username: ''
+                username: '',
+                loggedemail: '',
+                postId: ''
+            }
+        },
+        created: function() {
+            const self = this
+            if(localStorage.token) {
+                UserService.checkAuthentification()
+                    .then(function(value) {
+                        if(value.email) {
+                            self.loggedemail = value.email
+                        }
+                    })
             }
         },
         mounted: async function() {
             try {
-                const postId = this.$route.params.postId 
-                const response = await PostService.viewpost({postId: postId})
+                const postUrl = this.$route.params.postUrl.split("-")
+                const response = await PostService.viewpost({postId: postUrl[0]})
 
                 var date = new Date(response.data.post.createddate)
                 var month = date.getMonth() + 1
@@ -54,7 +70,9 @@
                 this.content = response.data.post.content
                 this.email = response.data.post.email
                 this.category = response.data.post.category
-                this.username = response.data.post.username            
+                this.username = response.data.post.username    
+                this.postId = response.data.post.postId
+
             } catch(error) {
                 console.log(error.response.data.error)
             }

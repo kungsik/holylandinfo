@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex xs10 offset-xs1>
       <div v-show="!token">
-        <div class="headline" style="padding-top:50px">로그인</div>
+        <div class="headline" style="padding-top:90px">로그인</div>
         <div>
           <form name="gopilgrims-form" autocomplete="off">
             <v-text-field label="이메일" v-model="email"></v-text-field>

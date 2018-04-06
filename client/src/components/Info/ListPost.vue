@@ -5,26 +5,26 @@
         <v-layout row wrap>
             <v-flex md8 offset-md2>
                 <v-progress-circular indeterminate :size="70" :width="7" color="purple" v-if="!postData[0]"></v-progress-circular>
-                <v-flex id="posts" v-for= "post in postData" :key="post.createddate">
+                <v-flex id="posts" v-for= "post in postData.slice().reverse()" :key="post.createddate">
                     <v-card color="blue-grey darken-2" class="white--text">
-                        <v-card-title primary-title>
-                            <div class="headline" style="display: block"> {{ post.title }} </div>
-                            <!-- <div>{{ post.content.replace(/(<([^>]+)>)/ig,"").substring(0, 30) }} ...</div> -->
+                        <v-card-title primary-title class="cardtitle">
+                            <div class="headline"> {{ post.title }} </div>
+                            <div>{{ removeHtmlandCut(post.content, 30) }}</div>
                         </v-card-title>
                         <v-card-actions>
-                            <v-btn flat dark :to="{path: '/post/viewpost/' + post.postId}">읽기</v-btn>
+                            <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>                                
             </v-flex>
-            <v-flex>
+            <!-- <v-flex>
                 <br>
                 <v-divider></v-divider>
                 <br>
             </v-flex>
             <v-flex md8 offset-md2>               
                                 
-            </v-flex>                
+            </v-flex>                 -->
         </v-layout>
     </v-container>
 </v-content>
@@ -39,7 +39,14 @@
     export default {
         data() {
             return {
-                postData: []
+                postData: [],
+                removeHtmlandCut(str, num) {
+                    var dots
+                    if(str.length > num) {
+                        dots = "..."
+                    } else { dots = "" }
+                    return str.replace(/(<([^>]+)>)/ig,"").substring(0, num) + dots
+                }
             }
         },
         mounted: async function() {
@@ -59,6 +66,9 @@
  </script>
 
  <style>
-    
+    .cardtitle {
+         display: block; 
+         text-align: justify;
+    }
 
 </style>

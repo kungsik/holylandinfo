@@ -23,6 +23,10 @@ module.exports = (app) => {
         PostController.addpost
     )
 
+    app.post('/post/editpost',
+        PostController.editpost
+    )
+
     app.post('/post/viewpost', 
         PostController.viewpost
     )
