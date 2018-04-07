@@ -44,8 +44,6 @@ module.exports = {
             var urlTitle = update.title.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\(\=]/gi, "").replace(/ /gi, "-")
             update.postUrl = update.editId + "-" + urlTitle
 
-            console.log(update)
-
             Post.update(
                 {
                     postId: update.editId,
@@ -95,9 +93,13 @@ module.exports = {
     },
     async listpost (req, res) {
         try {
-            const post = {}
-            post.jerusalem = await Post.find({ category: "예루살렘" }).select('title')
-            post.galilee = await Post.find({ category: "갈릴리" }).select('title')
+            const dataPerPage = Number(req.body.dataPerPage)
+            const category = req.body.category
+            const skipdata = req.body.startDataNum
+            // const endDataNum = req.body.endDataNum
+
+            const post = await Post.find({ category: category}).sort({ createddate: -1 }).skip(skipdata).limit(dataPerPage)
+            
             if(!post) {
                 return res.status(403).send({
                     error: '요청하신 포스트는 존재하지 않습니다.'
@@ -109,5 +111,10 @@ module.exports = {
                 error: '포스트 호출 중 오류가 발생했습니다.'
             })
         }
+    },
+    async getpostcount(req, res) {
+        const category = req.body.category
+        const count = await Post.count({ category: category })
+        res.send({count: count})
     }
 }

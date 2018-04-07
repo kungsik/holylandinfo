@@ -31,8 +31,12 @@ module.exports = (app) => {
         PostController.viewpost
     )
 
-    app.get('/post/listpost',
+    app.post('/post/listpost',
         PostController.listpost
+    )
+
+    app.post('/post/getpostcount',
+        PostController.getpostcount
     )
 
     app.post('/map/distance', 

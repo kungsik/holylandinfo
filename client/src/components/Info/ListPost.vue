@@ -7,11 +7,11 @@
                 <div class="headline">예루살렘</div>
                 <v-progress-circular indeterminate :size="70" :width="7" color="purple" v-if="!jerusalem.postData[0]"></v-progress-circular>
                 <v-layout row wrap>
-                    <v-flex xs4 v-for= "post in jerusalem.showPostData" :key="post.createddate">
+                    <v-flex xs4 v-for= "post in jerusalem.postData" :key="post.createddate">
                         <v-card color="blue-grey darken-2" class="white--text" height="200px">
                             <v-card-title primary-title class="cardtitle" height="200px">
                                 <div class="headline"> {{ post.title }} </div>
-                                <!-- <div>{{ removeHtmlandCut(post.content, 30) }}</div> -->
+                                <div>{{ removeHtmlandCut(post.content, 30) }}</div>
                             </v-card-title>
                             <v-card-actions style="position: absolute; bottom: 0px">
                                 <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
@@ -21,12 +21,12 @@
                 </v-layout>
                 <template>
                     <div class="text-xs-center">
-                        <v-pagination :length="jerusalem.pageNum" v-model="jerusalem.page" circle @input="showPage(jerusalem, jerusalem.page)"></v-pagination>
+                        <v-pagination :length="jerusalem.pageNum" v-model="jerusalem.page" circle @input="showPage(jerusalem, jerusalem.dataPerPage, jerusalem.page)"></v-pagination>
                     </div>
                 </template>                              
             </v-flex>
 
-            <v-flex md8 offset-md2>
+            <v-flex md12>
                 <br>
                 <v-divider></v-divider>
                 <br>
@@ -35,11 +35,11 @@
             <v-flex md8 offset-md2>
                 <div class="headline">갈릴리</div>
                 <v-layout row wrap>
-                    <v-flex xs4 v-for= "post in galilee.showPostData" :key="post.createddate">
+                    <v-flex xs4 v-for= "post in galilee.postData" :key="post.createddate">
                         <v-card color="blue-grey darken-2" class="white--text" height="200px">
                             <v-card-title primary-title class="cardtitle" height="200px">
                                 <div class="headline"> {{ post.title }} </div>
-                                <!-- <div>{{ removeHtmlandCut(post.content, 30) }}</div> -->
+                                <div>{{ removeHtmlandCut(post.content, 30) }}</div>
                             </v-card-title>
                             <v-card-actions style="position: absolute; bottom: 0px">
                                 <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
@@ -49,7 +49,7 @@
                 </v-layout>
                 <template>
                     <div class="text-xs-center">
-                        <v-pagination :length="galilee.pageNum" v-model="galilee.page" circle @input="showPage(galilee, galilee.page)"></v-pagination>
+                        <v-pagination :length="galilee.pageNum" v-model="galilee.page" circle @input="showPage(galilee, galilee.dataPerPage, galilee.page)"></v-pagination>
                     </div>
                 </template>                                 
             </v-flex>   
@@ -69,22 +69,20 @@
                 jerusalem: {
                     page: 1,
                     postData: [],
-                    showPostData: [],
                     totalDataNum: 0,
                     pageNum: 0,
                     dataPerPage: 3,
                     startDataNum: 0,
-                    endDataNum: 0
+                    category: "예루살렘"
                 },
                 galilee: {
                     page: 1,
                     postData: [],
-                    showPostData: [],
                     totalDataNum: 0,
                     pageNum: 0,
                     dataPerPage: 3,
                     startDataNum: 0,
-                    endDataNum: 0
+                    category: "갈릴리"
                 },
                 removeHtmlandCut(str, num) {
                     var dots
@@ -97,27 +95,31 @@
         },
         mounted: async function() {
             try {
-                const result = await PostService.listpost()
-
-                this.jerusalem.postData = result.data.jerusalem.reverse()
-                this.galilee.postData = result.data.galilee.reverse()
-
-                this.showPage(this.jerusalem)
-                this.showPage(this.galilee)
-
-
+                await this.showPage(this.jerusalem, this.jerusalem.dataPerPage)
+                await this.showPage(this.galilee, this.galilee.dataPerPage)
             } catch(error) {
-                console.log(error.response.data.error)
+                console.log('에러')
+                // console.log(error.response.data.error)
             }
         },
         methods: {
-            showPage(location, page = 1) {
-                location.totalDataNum = location.postData.length
-                location.pageNum = Math.ceil(location.totalDataNum/location.dataPerPage)
-                location.startDataNum = (location.page - 1) * location.dataPerPage
-                location.endDataNum = location.page * location.dataPerPage - 1
-                location.showPostData = location.postData
-                location.showPostData = location.showPostData.slice(location.startDataNum, location.endDataNum + 1)
+            async showPage(location, dataPerPage, page = 1) {
+                await PostService.getpostcount({category: location.category})
+                    .then(function(value) {
+                        location.totalDataNum = value.data.count
+                        location.pageNum = Math.ceil(location.totalDataNum / dataPerPage)
+                        location.startDataNum = ((page - 1) * dataPerPage)
+                    })
+                    .then(function() {
+                        var result = PostService.listpost({
+                            category: location.category, 
+                            dataPerPage: dataPerPage,
+                            startDataNum: location.startDataNum
+                        })
+                        .then(function(value) {
+                            location.postData = value.data
+                        })
+                    })                 
             }
         }
     }

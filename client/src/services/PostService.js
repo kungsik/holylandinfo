@@ -11,7 +11,10 @@ export default {
     viewpost(postId) {
         return Api().post('post/viewpost', postId)
     },
-    listpost() {
-        return Api().get('post/listpost')
+    listpost(query) {
+        return Api().post('post/listpost', query)
+    },
+    getpostcount(query) {
+        return Api().post('post/getpostcount', query)
     }
 }
