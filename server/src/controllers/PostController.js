@@ -95,7 +95,9 @@ module.exports = {
     },
     async listpost (req, res) {
         try {
-            const post = await Post.find({})
+            const post = {}
+            post.jerusalem = await Post.find({ category: "예루살렘" }).select('title')
+            post.galilee = await Post.find({ category: "갈릴리" }).select('title')
             if(!post) {
                 return res.status(403).send({
                     error: '요청하신 포스트는 존재하지 않습니다.'

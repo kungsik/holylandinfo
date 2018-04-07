@@ -4,27 +4,56 @@
     <v-container grid-list-xl text-xs-center>
         <v-layout row wrap>
             <v-flex md8 offset-md2>
-                <v-progress-circular indeterminate :size="70" :width="7" color="purple" v-if="!postData[0]"></v-progress-circular>
-                <v-flex id="posts" v-for= "post in postData.slice().reverse()" :key="post.createddate">
-                    <v-card color="blue-grey darken-2" class="white--text">
-                        <v-card-title primary-title class="cardtitle">
-                            <div class="headline"> {{ post.title }} </div>
-                            <div>{{ removeHtmlandCut(post.content, 30) }}</div>
-                        </v-card-title>
-                        <v-card-actions>
-                            <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-flex>                                
+                <div class="headline">예루살렘</div>
+                <v-progress-circular indeterminate :size="70" :width="7" color="purple" v-if="!jerusalem.postData[0]"></v-progress-circular>
+                <v-layout row wrap>
+                    <v-flex xs4 v-for= "post in jerusalem.showPostData" :key="post.createddate">
+                        <v-card color="blue-grey darken-2" class="white--text" height="200px">
+                            <v-card-title primary-title class="cardtitle" height="200px">
+                                <div class="headline"> {{ post.title }} </div>
+                                <!-- <div>{{ removeHtmlandCut(post.content, 30) }}</div> -->
+                            </v-card-title>
+                            <v-card-actions style="position: absolute; bottom: 0px">
+                                <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>  
+                </v-layout>
+                <template>
+                    <div class="text-xs-center">
+                        <v-pagination :length="jerusalem.pageNum" v-model="jerusalem.page" circle @input="showPage(jerusalem, jerusalem.page)"></v-pagination>
+                    </div>
+                </template>                              
             </v-flex>
-            <!-- <v-flex>
+
+            <v-flex md8 offset-md2>
                 <br>
                 <v-divider></v-divider>
                 <br>
             </v-flex>
-            <v-flex md8 offset-md2>               
-                                
-            </v-flex>                 -->
+
+            <v-flex md8 offset-md2>
+                <div class="headline">갈릴리</div>
+                <v-layout row wrap>
+                    <v-flex xs4 v-for= "post in galilee.showPostData" :key="post.createddate">
+                        <v-card color="blue-grey darken-2" class="white--text" height="200px">
+                            <v-card-title primary-title class="cardtitle" height="200px">
+                                <div class="headline"> {{ post.title }} </div>
+                                <!-- <div>{{ removeHtmlandCut(post.content, 30) }}</div> -->
+                            </v-card-title>
+                            <v-card-actions style="position: absolute; bottom: 0px">
+                                <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>  
+                </v-layout>
+                <template>
+                    <div class="text-xs-center">
+                        <v-pagination :length="galilee.pageNum" v-model="galilee.page" circle @input="showPage(galilee, galilee.page)"></v-pagination>
+                    </div>
+                </template>                                 
+            </v-flex>   
+
         </v-layout>
     </v-container>
 </v-content>
@@ -32,14 +61,31 @@
 </template>
 
  <script> 
-    //import UserService from '@/services/UserService'
     import PostService from '@/services/PostService'
-    //import router from '@/router/'
 
     export default {
         data() {
             return {
-                postData: [],
+                jerusalem: {
+                    page: 1,
+                    postData: [],
+                    showPostData: [],
+                    totalDataNum: 0,
+                    pageNum: 0,
+                    dataPerPage: 3,
+                    startDataNum: 0,
+                    endDataNum: 0
+                },
+                galilee: {
+                    page: 1,
+                    postData: [],
+                    showPostData: [],
+                    totalDataNum: 0,
+                    pageNum: 0,
+                    dataPerPage: 3,
+                    startDataNum: 0,
+                    endDataNum: 0
+                },
                 removeHtmlandCut(str, num) {
                     var dots
                     if(str.length > num) {
@@ -52,14 +98,26 @@
         mounted: async function() {
             try {
                 const result = await PostService.listpost()
-                this.postData = result.data
+
+                this.jerusalem.postData = result.data.jerusalem.reverse()
+                this.galilee.postData = result.data.galilee.reverse()
+
+                this.showPage(this.jerusalem)
+                this.showPage(this.galilee)
 
 
-                // var date = new Date(response.data.post.createddate)
-                // var month = date.getMonth() + 1
-                // this.createddate = date.getFullYear() + "." + month + "." + date.getDate()            
             } catch(error) {
                 console.log(error.response.data.error)
+            }
+        },
+        methods: {
+            showPage(location, page = 1) {
+                location.totalDataNum = location.postData.length
+                location.pageNum = Math.ceil(location.totalDataNum/location.dataPerPage)
+                location.startDataNum = (location.page - 1) * location.dataPerPage
+                location.endDataNum = location.page * location.dataPerPage - 1
+                location.showPostData = location.postData
+                location.showPostData = location.showPostData.slice(location.startDataNum, location.endDataNum + 1)
             }
         }
     }
@@ -68,7 +126,7 @@
  <style>
     .cardtitle {
          display: block; 
-         text-align: justify;
+         text-align: left;
     }
 
 </style>
