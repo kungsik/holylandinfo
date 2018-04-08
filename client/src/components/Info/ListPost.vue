@@ -3,18 +3,21 @@
 <v-content style="padding-top: 70px">
     <v-container grid-list-xl text-xs-center>
         <v-layout row wrap>
-            <v-flex md8 offset-md2>
+            <v-flex md10 offset-md1>
                 <div class="headline">예루살렘</div>
                 <v-progress-circular indeterminate :size="70" :width="7" color="purple" v-if="!jerusalem.postData[0]"></v-progress-circular>
                 <v-layout row wrap>
-                    <v-flex xs4 v-for= "post in jerusalem.postData" :key="post.createddate">
-                        <v-card color="blue-grey darken-2" class="white--text" height="200px">
+                    <v-flex v-for= "post in jerusalem.postData" :key="post.createddate">
+                        <v-card height="350px">
+                            <v-card-media>
+                                <img :src="getTitleImg(post.content)" height="200px" class="titleImg">
+                            </v-card-media>
                             <v-card-title primary-title class="cardtitle" height="200px">
                                 <div class="headline"> {{ post.title }} </div>
                                 <div>{{ removeHtmlandCut(post.content, 30) }}</div>
                             </v-card-title>
-                            <v-card-actions style="position: absolute; bottom: 0px">
-                                <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
+                            <v-card-actions class="submitbutton">
+                                <v-btn outline round color="indigo" :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-flex>  
@@ -32,17 +35,20 @@
                 <br>
             </v-flex>
 
-            <v-flex md8 offset-md2>
+            <v-flex md10 offset-md1>
                 <div class="headline">갈릴리</div>
                 <v-layout row wrap>
-                    <v-flex xs4 v-for= "post in galilee.postData" :key="post.createddate">
-                        <v-card color="blue-grey darken-2" class="white--text" height="200px">
+                    <v-flex v-for= "post in galilee.postData" :key="post.createddate">
+                        <v-card height="350px">
+                            <v-card-media>
+                                <img :src="getTitleImg(post.content)" height="200px" class="titleImg">
+                            </v-card-media>
                             <v-card-title primary-title class="cardtitle" height="200px">
                                 <div class="headline"> {{ post.title }} </div>
                                 <div>{{ removeHtmlandCut(post.content, 30) }}</div>
                             </v-card-title>
-                            <v-card-actions style="position: absolute; bottom: 0px">
-                                <v-btn flat dark :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
+                            <v-card-actions class="submitbutton">
+                                <v-btn outline round color="indigo" :to="{path: '/post/viewpost/' + post.postUrl}">읽기</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-flex>  
@@ -71,16 +77,16 @@
                     postData: [],
                     totalDataNum: 0,
                     pageNum: 0,
-                    dataPerPage: 3,
+                    dataPerPage: 4,
                     startDataNum: 0,
-                    category: "예루살렘"
+                    category: "예루살렘" 
                 },
                 galilee: {
                     page: 1,
                     postData: [],
                     totalDataNum: 0,
                     pageNum: 0,
-                    dataPerPage: 3,
+                    dataPerPage: 4,
                     startDataNum: 0,
                     category: "갈릴리"
                 },
@@ -90,6 +96,11 @@
                         dots = "..."
                     } else { dots = "" }
                     return str.replace(/(<([^>]+)>)/ig,"").substring(0, num) + dots
+                },
+                getTitleImg(content) {
+                    var imgsrc = content.match("<img[^>]*src=[\"']?([^>\"']+)[\"']")[0]
+                    var src = imgsrc.replace("<img src=", "").replace("\"", "").replace("\"", "")
+                    return src
                 }
             }
         },
@@ -129,6 +140,13 @@
     .cardtitle {
          display: block; 
          text-align: left;
+    }
+    .titleImg {
+        object-fit: cover
+    }
+    .submitbutton {
+        position: absolute; 
+        bottom: 0px;
     }
 
 </style>
