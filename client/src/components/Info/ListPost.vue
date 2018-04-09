@@ -1,11 +1,16 @@
 <template>
-
 <v-content style="padding-top: 70px">
+
+    <v-dialog v-model="loadDialog" fullscreen transition="false">
+            <div id="loadDialog">
+                <v-progress-circular indeterminate :size="70" :width="7" color="purple" id="loadImg"></v-progress-circular>
+            </div>
+    </v-dialog>
+    
     <v-container grid-list-xl text-xs-center>
         <v-layout row wrap>
             <v-flex md10 offset-md1>
                 <div class="headline">예루살렘</div>
-                <v-progress-circular indeterminate :size="70" :width="7" color="purple" v-if="!jerusalem.postData[0]"></v-progress-circular>
                 <v-layout row wrap>
                     <v-flex v-for= "post in jerusalem.postData" :key="post.createddate">
                         <v-card height="350px">
@@ -90,6 +95,7 @@
                     startDataNum: 0,
                     category: "갈릴리"
                 },
+                loadDialog: true,
                 removeHtmlandCut(str, num) {
                     var dots
                     if(str.length > num) {
@@ -112,6 +118,10 @@
                 console.log('에러')
                 // console.log(error.response.data.error)
             }
+            //로딩이 완전히 끝났음을 반환
+            this.$nextTick(function() { 
+                    this.loadDialog = false
+                })
         },
         methods: {
             async showPage(location, dataPerPage, page = 1) {
@@ -122,7 +132,7 @@
                         location.startDataNum = ((page - 1) * dataPerPage)
                     })
                     .then(function() {
-                        var result = PostService.listpost({
+                        PostService.listpost({
                             category: location.category, 
                             dataPerPage: dataPerPage,
                             startDataNum: location.startDataNum
@@ -138,8 +148,8 @@
 
  <style>
     .cardtitle {
-         display: block; 
-         text-align: left;
+        display: block; 
+        text-align: left;
     }
     .titleImg {
         object-fit: cover
@@ -147,6 +157,16 @@
     .submitbutton {
         position: absolute; 
         bottom: 0px;
+    }
+    #loadDialog {
+        background-color: white;
+        width: 100%;
+        height: 100%;
+    }
+    #loadImg {
+        position: absolute;
+        top:50%; 
+        left:50%; 
     }
 
 </style>

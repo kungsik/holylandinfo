@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app light>
-
+      
       <Header />
 
       <router-view></router-view>
@@ -17,7 +17,7 @@ export default {
   name: 'app',
   components: {
     Header
-  }
+  },
 }
 </script>
 
