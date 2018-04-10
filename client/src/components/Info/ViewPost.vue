@@ -29,6 +29,7 @@
                         </div>               
                     </v-flex>                
                 </v-flex>
+                <div id="disqus_thread"></div>
             </v-layout>
         </v-container>
     </v-content>
@@ -38,7 +39,6 @@
  <script> 
     import UserService from '@/services/UserService'
     import PostService from '@/services/PostService'
-    import mapboxgl from 'mapbox-gl'
 
     export default {
         data() {
@@ -97,14 +97,15 @@
         },
         methods: {
             showMap(center) {
+                const google = window.google
                 var map = new google.maps.Map(document.getElementById('map'), {
                     center: center,
                     zoom: 10
                 })
-                var marker = new google.maps.Marker({
+                new google.maps.Marker({
                     position: center,
                     map: map
-                });
+                })
             }
         }
     }

@@ -1,0 +1,36 @@
+{ 
+    "베드로통곡교회":
+    {
+        "placeName": {
+            "ko": "승천당",
+            "en": "Chapel of Ascension"
+        },
+        "placeCategory": "religious",
+        "region": "jerusalem",
+        "latlan": [31.779038, 35.245054],
+        "opening": "08:00-17:00"
+    },
+    "오병이어교회":
+    {
+        "placeName": {
+            "ko": "주기도문 교회",
+            "en": "Pater Noster Church"
+        },
+        "placeCategory": "religious",
+        "region": "jerusalem",
+        "latlan": [31.778199, 35.245172],
+        "opening": "08:00-17:00"
+    },
+    "가버나움":
+    {
+        "placeName": {
+            "ko": "눈물 교회",
+            "en": "Dominus Flevit Church"
+        },
+        "placeCategory": "religious",
+        "region": "jerusalem",
+        "latlan": [31.778085, 35.241895],
+        "opening": "08:00-17:00"
+    }
+    
+}

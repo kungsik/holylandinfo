@@ -34,7 +34,7 @@ module.exports = {
         } catch (err) {
             res.status(500).send({
                 error: '포스트 등록 서버에 문제가 발생했습니다. 다시 시도해 주세요.'
-            })
+            }) 
         }
     },
     async editpost (req, res) {      
@@ -90,7 +90,7 @@ module.exports = {
                 error: '포스트 호출 중 오류가 발생했습니다.'
             })
         }
-    },
+    }, 
     async listpost (req, res) {
         try {
             const dataPerPage = Number(req.body.dataPerPage)
@@ -114,7 +114,18 @@ module.exports = {
     },
     async getpostcount(req, res) {
         const category = req.body.category
-        const count = await Post.count({ category: category })
+        const count = await Post.count({ category: category }) 
         res.send({count: count})
+    }, 
+    async getgeolocation(req, res) {
+        const fs = require('fs')
+        const path = require('path')
+        const file = "../assets/" + req.body.region + ".json" 
+
+        fs.readFile(path.resolve(__dirname, file), "utf8", function(error, data) {
+            var obj = JSON.parse(data)
+            res.send(obj)
+        })
+
     }
 }

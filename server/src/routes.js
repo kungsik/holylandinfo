@@ -39,6 +39,10 @@ module.exports = (app) => {
         PostController.getpostcount
     )
 
+    app.post('/post/getgeolocation',
+        PostController.getgeolocation
+    )
+
     app.post('/map/distance', 
         MapDistanceController.distance
     )

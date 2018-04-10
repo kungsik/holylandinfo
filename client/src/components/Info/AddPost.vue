@@ -5,10 +5,14 @@
     <div class="headline addPostTitle" v-if="editId">글 수정</div>
     <div id="texteditor">
         <form name="post" autocomplete="off">
-            <v-layout row justify-space-between>
-                <v-flex md8 offset-md2>
+            <v-flex md8 offset-md2>
+                <v-layout row wrap justify-space-between>
+                <!-- <v-layout row md8 offset-md2> -->
                     <v-flex md2>
                         <v-select label="카테고리" v-model="category" :items="categories"></v-select>
+                    </v-flex>
+                    <v-flex md5>
+                        <v-select label="지역정보" v-model="geolocation" :items="geolocations" autocomplete></v-select>
                     </v-flex>
                     <v-flex md12>
                         <v-text-field label="제목" v-model="title" :rules="[rules.required]"></v-text-field>
@@ -16,17 +20,18 @@
                     <v-flex md12>
                         <div id="editor"></div>
                     </v-flex>
-                </v-flex>
-            </v-layout>
+                <!-- </v-flex> -->
+                </v-layout>
+            </v-flex>
         </form>
     </div>
 
     <!-- <div v-show="!issubmitted"> -->
     <div v-if="!editId">
-        <v-btn dark class="cyan" @click="add">글쓰기</v-btn>
+        <br><br><v-btn dark class="cyan" @click="add">글쓰기</v-btn>
     </div>
     <div v-if="editId">
-        <v-btn dark class="cyan" @click="edit">글수정</v-btn>
+        <br><br><v-btn dark class="cyan" @click="edit">글수정</v-btn>
     </div>
 </v-content>
 
@@ -44,7 +49,7 @@
     import UserService from '@/services/UserService'
     import PostService from '@/services/PostService'
     import router from '@/router/'
-
+    
     export default {
         data() {
             return {
@@ -57,10 +62,16 @@
                 createddate: '',
                 category: '',
                 categories: ["예루살렘", "갈릴리"],
+                regions: {
+                    "예루살렘": "jerusalem",
+                    "갈릴리": "galilee"
+                },
                 rules: {
                     required: (value) => !!value || '필수 항목입니다.'
                 },
-                editId: this.$route.params.editId
+                editId: this.$route.params.editId,
+                geolocations: [],
+                geolocation: ''
             }
         },
         methods: {
@@ -136,10 +147,9 @@
                                 self.quill.clipboard.dangerouslyPasteHTML(response.data.post.content)
                             })                        
                     }
-                })
-            
+                })            
         },
-        mounted: function() {
+        mounted: async function() {
 
             var toolbarOptions = [
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }, { 'font': [] }],
@@ -166,7 +176,17 @@
                 }
             })
 
-            this.quill = quill
+            this.quill = quill  
+            
+            // console.log(this.category)
+
+            
+        },
+        updated: async function() {
+            var selectedregion = this.category
+            // console.log(this.regions[selectedregion])
+            var geo = await PostService.getgeolocation({region: this.regions[selectedregion]})
+            this.geolocations = Object.keys(geo.data)
         }
     }
  </script>

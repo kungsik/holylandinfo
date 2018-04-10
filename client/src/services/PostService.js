@@ -16,5 +16,8 @@ export default {
     },
     getpostcount(query) {
         return Api().post('post/getpostcount', query)
+    },
+    getgeolocation(region) {
+        return Api().post('post/getgeolocation', region)
     }
 }
