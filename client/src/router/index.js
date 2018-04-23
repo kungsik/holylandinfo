@@ -7,9 +7,7 @@ import Login from '@/components/Login'
 import AddPost from '@/components/Info/AddPost'
 import ViewPost from '@/components/Info/ViewPost'
 import ListPost from '@/components/Info/ListPost'
-
-
-
+import Direction from '@/components/Planner/Direction'
 
 
 Vue.use(Router)
@@ -49,6 +47,10 @@ export default new Router({
         {
             path: '/test',
             component: Test
+        },
+        {
+            path: '/planner/direction',
+            component: Direction
         }
     ]
 })

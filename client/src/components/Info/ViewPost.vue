@@ -67,6 +67,7 @@
         },
         mounted: async function() {
             try {
+                //포스트 불러오기. 포스트 아이디는 url상에 적혀 있는 일련번호로 가져옴.
                 const postUrl = this.$route.params.postUrl.split("-")
                 const response = await PostService.viewpost({postId: postUrl[0]})
 
@@ -81,6 +82,7 @@
                 this.username = response.data.post.username    
                 this.postId = response.data.post.postId
 
+                //지도상 위치 좌표 불러오기
                 var center = {
                     lat: 32.500084, 
                     lng: 34.8907343
@@ -96,6 +98,7 @@
             }
         },
         methods: {
+            //구글맵 불러오기 
             showMap(center) {
                 const google = window.google
                 var map = new google.maps.Map(document.getElementById('map'), {
@@ -124,7 +127,7 @@
     #map {
         width: 100%;
         height: 300px;
-        /* left정렬을 해야 정상적으로 맵이 로딩됨 */
+        /* left정렬을 해야 정상적으로 맵이 로딩됨(mapbox일 경우) */
         /* text-align: left; */
     }
 

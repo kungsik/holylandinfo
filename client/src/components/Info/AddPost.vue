@@ -7,7 +7,6 @@
         <form name="post" autocomplete="off">
             <v-flex md8 offset-md2>
                 <v-layout row wrap justify-space-between>
-                <!-- <v-layout row md8 offset-md2> -->
                     <v-flex md2>
                         <v-select label="카테고리" v-model="category" :items="categories"></v-select>
                     </v-flex>
@@ -20,16 +19,16 @@
                     <v-flex md12>
                         <div id="editor"></div>
                     </v-flex>
-                <!-- </v-flex> -->
                 </v-layout>
             </v-flex>
         </form>
     </div>
 
-    <!-- <div v-show="!issubmitted"> -->
+    <!-- 글쓰기 모드 -->
     <div v-if="!editId">
         <br><br><v-btn dark class="cyan" @click="add">글쓰기</v-btn>
     </div>
+    <!-- 에디트 모드 -->
     <div v-if="editId">
         <br><br><v-btn dark class="cyan" @click="edit">글수정</v-btn>
     </div>
@@ -38,6 +37,7 @@
 </template>
 
  <script> 
+    // quill.js 확장기능: 이미지 드롭다운, 이미지 크기 변환, 이미지 업로드
     import Quill from 'quill'
     
     import { ImageDrop } from 'quill-image-drop-module'
@@ -45,6 +45,9 @@
 
     import BlotFormatter from "quill-blot-formatter"
     Quill.register('modules/blotFormatter', BlotFormatter)
+
+    // import { ImageUpload } from 'quill-image-upload'
+    // Quill.register('modules/imageUpload', ImageUpload)
 
     import UserService from '@/services/UserService'
     import PostService from '@/services/PostService'
@@ -151,6 +154,8 @@
         },
         mounted: async function() {
 
+            // quill.js 에디터 불러오기
+
             var toolbarOptions = [
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }, { 'font': [] }],
 
@@ -172,7 +177,18 @@
                 modules: {
                     toolbar: toolbarOptions,
                     blotFormatter: {},
-                    imageDrop: true
+                    imageDrop: true,
+                    // imageUpload: {
+                    //     url: "../postImg",
+                    //     // method: "POST",
+                    //     headers: { token: 'my-token'},
+                    //     callbackOK: (serverResponse, next) => {
+                    //         next(serverResponse)
+                    //     },
+                    //     callbackKO: (serverError) => {
+                    //         console.log(serverError)
+                    //     }
+                    // }
                 }
             })
 
